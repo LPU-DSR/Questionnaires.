@@ -3,84 +3,123 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Student Questionnaire</title>
+<title>Emotional Well-being Assignment</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;450;500;600;700&display=swap" rel="stylesheet" />
 <style>
-  /* ============================================================
-     CONFIG — paste your Apps Script /exec URL to enable saving.
-     Leave "" to preview without a backend.
-     ============================================================ */
   :root{
-    --navy:#16263f; --ink:#223040; --muted:#5f7183; --line:#e3e9ef;
-    --bg:#f5f8fb; --card:#fff; --accent:#3a9d6b; --accent-bg:#eef7f1;
-    --radius:18px; --shadow:0 1px 2px rgba(22,38,63,.04),0 12px 34px -18px rgba(22,38,63,.22);
-    --shadow-lg:0 30px 70px -30px rgba(22,38,63,.35);
+    --paper:#f6f4ee; --card:#fffdf9; --ink:#1e2b26; --muted:#6c7a72;
+    --line:#e7e3d8; --accent:#2f8f6b; --accent-deep:#22705220; --accent-soft:#e9f3ec;
+    --accent-ink:#1f6b4f; --shadow:0 1px 2px rgba(30,43,38,.04),0 18px 40px -22px rgba(30,43,38,.28);
+    --shadow-lg:0 40px 90px -40px rgba(30,43,38,.4); --radius:22px;
   }
   *{box-sizing:border-box}
-  body{margin:0;font-family:'Inter',system-ui,sans-serif;color:var(--ink);line-height:1.55;
-    background:radial-gradient(1100px 560px at 82% -10%,#eaf2fb 0,transparent 55%),
-      radial-gradient(820px 460px at -8% 8%,#eef7f1 0,transparent 50%),var(--bg);
-    -webkit-font-smoothing:antialiased;}
-  .wrap{max-width:720px;margin:0 auto;padding:26px 20px 90px}
-  .masthead{display:flex;align-items:center;gap:13px;margin-bottom:22px}
-  .crest{width:44px;height:44px;border-radius:12px;flex:none;display:grid;place-items:center;color:#fff;
-    background:linear-gradient(150deg,var(--navy),#24405f);box-shadow:var(--shadow)}
-  .crest svg{width:24px;height:24px}
-  .masthead .m-title{font-weight:600;font-size:.96rem}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:'Inter',system-ui,sans-serif;color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;
+    background:
+      radial-gradient(1200px 620px at 84% -12%, #e6f0ea 0, transparent 58%),
+      radial-gradient(900px 520px at -12% 6%, #f3eebe 0, transparent 52%),
+      radial-gradient(700px 700px at 50% 120%, #eaf2ec 0, transparent 60%),
+      var(--paper);}
+  .wrap{max-width:660px;margin:0 auto;padding:30px 20px 96px}
 
-  .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
-    box-shadow:var(--shadow);padding:30px;animation:rise .45s cubic-bezier(.2,.8,.3,1) both}
-  @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-  @media (max-width:600px){.panel{padding:22px 18px}.wrap{padding:18px 14px 80px}}
+  /* masthead */
+  .masthead{display:flex;align-items:center;gap:12px;margin-bottom:26px;padding-left:2px}
+  .crest{width:48px;height:48px;border-radius:50%;flex:none;display:grid;place-items:center;overflow:hidden;
+    background:#fff;box-shadow:var(--shadow);border:1px solid var(--line)}
+  .crest img{width:100%;height:100%;object-fit:contain;display:block}
+  .masthead .m-title{font-weight:600;font-size:.92rem;letter-spacing:.01em}
+  .masthead .m-tag{font-size:.74rem;color:var(--muted)}
 
-  h1{font-family:'Fraunces',serif;font-weight:600;font-size:1.6rem;color:var(--navy);margin:0 0 4px;letter-spacing:-.01em}
-  .sub{color:var(--muted);font-size:.95rem;margin:0 0 22px}
+  /* panel */
+  .panel{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:38px 38px 34px;overflow:hidden;animation:rise .5s cubic-bezier(.2,.8,.3,1) both}
+  .panel::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;
+    background:linear-gradient(90deg,#2f8f6b,#6bbf98 60%,#d8c9a0)}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @media (max-width:600px){.panel{padding:28px 20px 26px}.wrap{padding:20px 14px 84px}}
 
-  .field{margin-bottom:16px}
-  .field label{font-size:.82rem;font-weight:600;color:var(--navy);display:block;margin-bottom:6px}
+  /* details hero */
+  .hero-emblem{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;margin-bottom:18px;
+    color:var(--accent-ink);background:var(--accent-soft);border:1px solid #d5e8dc}
+  .hero-emblem svg{width:28px;height:28px}
+  h1{font-family:'Fraunces',serif;font-weight:600;font-size:2rem;line-height:1.1;letter-spacing:-.015em;
+    color:var(--ink);margin:0 0 12px}
+  @media (max-width:600px){h1{font-size:1.7rem}}
+  .desc{color:var(--muted);font-size:1.02rem;max-width:52ch;margin:0}
+  .meta-chip{display:inline-flex;align-items:center;gap:7px;margin-top:20px;font-size:.78rem;font-weight:500;
+    color:var(--accent-ink);background:var(--accent-soft);border:1px solid #d5e8dc;border-radius:30px;padding:7px 13px}
+  .meta-chip svg{width:14px;height:14px}
+
+  .rule{height:1px;background:var(--line);margin:26px 0 22px;border:none}
+
+  /* fields */
+  .field{margin-bottom:18px}
+  .field label{font-size:.8rem;font-weight:600;color:var(--ink);display:block;margin-bottom:7px;letter-spacing:.005em}
   .field .req{color:var(--accent)}
   .field .opt{color:var(--muted);font-weight:400}
-  .field input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:11px;font:inherit;
-    color:var(--ink);background:#fbfdff;transition:border-color .2s,box-shadow .2s}
-  .field input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg)}
-  .field input.bad{border-color:#e05a4f;box-shadow:0 0 0 3px #fdeeec}
-  .err{font-size:.76rem;color:#d64a3f;margin-top:6px;min-height:1em}
+  .inp{position:relative}
+  .inp>svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:#9aa8a0;pointer-events:none;transition:color .2s}
+  .field input{width:100%;padding:13px 15px 13px 42px;border:1px solid var(--line);border-radius:13px;font:inherit;
+    color:var(--ink);background:#fbfaf5;transition:border-color .2s,box-shadow .2s,background .2s}
+  .field input::placeholder{color:#a9b3ab}
+  .field input:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 4px var(--accent-soft)}
+  .field input:focus + svg,.inp:focus-within>svg{color:var(--accent)}
+  .field input.bad{border-color:#d9614f;box-shadow:0 0 0 4px #fbe9e6}
+  .err{font-size:.76rem;color:#c9503e;margin-top:6px;min-height:1em}
 
-  .btn{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:600;padding:13px 24px;border-radius:12px;
-    transition:transform .15s,box-shadow .2s,opacity .2s}
+  /* buttons */
+  .btn{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:600;padding:14px 26px;border-radius:14px;
+    transition:transform .14s,box-shadow .22s,opacity .2s,background .2s;letter-spacing:.01em}
   .btn:active{transform:translateY(1px)}
-  .btn-primary{background:linear-gradient(150deg,var(--navy),#24405f);color:#fff;box-shadow:var(--shadow)}
-  .btn-primary:hover{box-shadow:var(--shadow-lg)}
-  .btn-primary:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
-  .btn-ghost{background:transparent;color:var(--navy);border:1px solid var(--line)}
-  .btn-ghost:hover{background:#f0f4f8}
-  .btn-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:26px}
+  .btn-primary{background:linear-gradient(150deg,#2f8f6b,#237053);
+    color:#fff;box-shadow:0 10px 24px -12px rgba(34,112,82,.7)}
+  .btn-primary:hover{box-shadow:0 16px 32px -14px rgba(34,112,82,.8)}
+  .btn-primary:disabled{background:#c3ccc6;color:#fff;cursor:not-allowed;box-shadow:none}
+  .btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .btn-ghost:hover{background:#f1efe8}
+  .btn-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:28px}
 
-  .lead{font-size:.95rem;color:var(--muted);margin:0 0 6px}
-  .qlist{margin-top:8px}
-  .q{display:flex;align-items:center;gap:14px;padding:15px 4px;border-bottom:1px solid var(--line)}
-  .q:last-child{border-bottom:none}
-  .q .qn{font-size:.72rem;font-weight:700;color:#fff;background:var(--accent);flex:none;width:26px;height:26px;
-    border-radius:8px;display:grid;place-items:center}
-  .q .qt{flex:1;font-size:.95rem}
-  .toggle{display:flex;gap:6px;flex:none;background:#eef2f6;padding:4px;border-radius:11px}
+  /* quiz */
+  .quiz-head{margin-bottom:6px}
+  .lead{font-family:'Fraunces',serif;font-size:1.35rem;font-weight:600;color:var(--ink);letter-spacing:-.01em;margin:0 0 4px}
+  .lead-sub{color:var(--muted);font-size:.9rem;margin:0}
+  .qlist{margin-top:20px}
+  .q{display:flex;align-items:center;gap:15px;padding:15px 14px;margin:0 -14px;border-radius:14px;
+    transition:background .25s}
+  .q:has(button.on){background:linear-gradient(90deg,var(--accent-soft),transparent 92%)}
+  .q + .q{border-top:1px solid var(--line)}
+  .q:has(button.on) + .q{border-top-color:transparent}
+  .qn{font-size:.74rem;font-weight:700;color:#8a978f;background:#eef0ea;flex:none;width:28px;height:28px;
+    border-radius:9px;display:grid;place-items:center;transition:all .25s}
+  .q:has(button.on) .qn{background:var(--accent);color:#fff}
+  .qt{flex:1;font-size:.96rem;color:var(--ink)}
+  .toggle{display:flex;gap:4px;flex:none;background:#eef0ea;padding:4px;border-radius:12px}
   .toggle button{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:600;font-size:.82rem;
-    padding:8px 16px;border-radius:8px;color:var(--muted);background:transparent;transition:all .18s}
-  .toggle button.yes.on{background:var(--accent);color:#fff}
-  .toggle button.no.on{background:var(--navy);color:#fff}
+    padding:8px 17px;border-radius:9px;color:var(--muted);background:transparent;transition:all .18s;
+    display:inline-flex;align-items:center;gap:6px}
+  .toggle button svg{width:14px;height:14px;opacity:0;transform:scale(.6);transition:all .18s}
+  .toggle button.on svg{opacity:1;transform:scale(1)}
+  .toggle button.yes.on{background:var(--accent);color:#fff;box-shadow:0 4px 10px -3px rgba(34,112,82,.55)}
+  .toggle button.no.on{background:var(--ink);color:#fff;box-shadow:0 4px 10px -3px rgba(30,43,38,.5)}
   .toggle button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-  .prog{height:6px;background:var(--line);border-radius:20px;overflow:hidden;margin-top:14px}
-  .prog>i{display:block;height:100%;width:0;background:var(--accent);border-radius:20px;transition:width .4s ease}
-  .hint{font-size:.8rem;color:var(--muted);margin-top:10px}
+  /* progress */
+  .progwrap{display:flex;align-items:center;gap:16px;margin-top:24px}
+  .count{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:600;color:var(--ink);white-space:nowrap}
+  .count b{color:var(--accent-ink)}
+  .prog{flex:1;height:8px;background:#e9e6dc;border-radius:20px;overflow:hidden}
+  .prog>i{display:block;height:100%;width:0;border-radius:20px;background:linear-gradient(90deg,#2f8f6b,#6bbf98);transition:width .45s cubic-bezier(.2,.8,.3,1)}
 
-  .done-ico{width:64px;height:64px;border-radius:50%;background:var(--accent-bg);color:var(--accent);
-    display:grid;place-items:center;margin:0 auto 16px}
-  .done-ico svg{width:32px;height:32px}
+  /* done */
   .center{text-align:center}
-  .save-state{font-size:.85rem;color:var(--muted);margin-top:16px;text-align:center}
+  .done-ico{width:74px;height:74px;border-radius:50%;background:var(--accent-soft);color:var(--accent);
+    display:grid;place-items:center;margin:6px auto 20px;border:1px solid #d5e8dc;animation:pop .5s cubic-bezier(.2,.9,.3,1) both}
+  @keyframes pop{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:none}}
+  .done-ico svg{width:36px;height:36px}
+  .save-state{font-size:.86rem;color:var(--muted);margin-top:18px}
+
   .hidden{display:none!important}
   :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -90,29 +129,48 @@
 <div class="wrap">
 
   <div class="masthead">
-    <div class="crest" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-7-10a7 7 0 0 1 14 0c0 5.65-7 10-7 10Z"/><path d="M9.2 12.2l1.9 1.9 3.7-3.9"/></svg>
+    <div class="crest"><img src="data:image/png;base64,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" alt="Lovely Professional University logo" /></div>
+    <div>
+      <div class="m-title">Division of Student Relationship</div>
+      <div class="m-tag">Student support &amp; well-being</div>
     </div>
-    <div class="m-title">Division of Student Relationship</div>
   </div>
 
   <!-- ===== DETAILS ===== -->
   <section class="panel" id="screen-details">
-    <h1>Please enter your details</h1>
-    <p class="sub">Registration number and programme are required.</p>
+    <div class="hero-emblem" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-6.5-4-6.5-9A4 4 0 0 1 12 8a4 4 0 0 1 6.5 3.5c0 5-6.5 9-6.5 9Z"/><path d="M8.5 12.2h2l1-2 1.5 3 1-1.5h1.5"/></svg>
+    </div>
+    <h1>Emotional Well-being Assignment</h1>
+    <p class="desc">A short, private set of yes/no questions to help us understand your strengths and the areas where a little extra support could help you thrive at university.</p>
+    <div class="meta-chip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+      Private · takes about 3 minutes
+    </div>
+
+    <hr class="rule" />
 
     <div class="field">
       <label for="f-reg">Registration Number <span class="req">*</span></label>
-      <input id="f-reg" type="text" inputmode="numeric" maxlength="8" placeholder="8-digit number" autocomplete="off" />
+      <div class="inp">
+        <input id="f-reg" type="text" inputmode="numeric" maxlength="8" placeholder="8-digit number" autocomplete="off" />
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h4M7 13h2M15 9h2M14 13h3"/></svg>
+      </div>
       <div class="err" id="err-reg"></div>
     </div>
     <div class="field">
       <label for="f-name">Full Name <span class="opt">(optional)</span></label>
-      <input id="f-name" type="text" placeholder="Your name" autocomplete="name" />
+      <div class="inp">
+        <input id="f-name" type="text" placeholder="Your name" autocomplete="name" />
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/></svg>
+      </div>
     </div>
     <div class="field">
       <label for="f-prog">Programme <span class="req">*</span></label>
-      <input id="f-prog" type="text" placeholder="e.g. B.Tech CSE" />
+      <div class="inp">
+        <input id="f-prog" type="text" placeholder="e.g. B.Tech CSE" />
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 2 9l10 5 10-5-10-5Z"/><path d="M6 11v4c0 1.1 2.7 2.5 6 2.5s6-1.4 6-2.5v-4"/></svg>
+      </div>
       <div class="err" id="err-prog"></div>
     </div>
 
@@ -122,12 +180,18 @@
     </div>
   </section>
 
-  <!-- ===== QUESTIONS (used for both sets) ===== -->
+  <!-- ===== QUESTIONS ===== -->
   <section class="panel hidden" id="screen-quiz">
-    <p class="lead" id="quizLead">Please answer Yes or No to each question.</p>
+    <div class="quiz-head">
+      <p class="lead" id="quizLead">A few honest answers</p>
+      <p class="lead-sub" id="quizSub">There are no right or wrong answers — just tap Yes or No.</p>
+    </div>
     <div class="qlist" id="qlist"></div>
-    <div class="prog" aria-hidden="true"><i id="progBar"></i></div>
-    <div class="hint" id="hint">0 of 10 answered</div>
+    <div class="progwrap">
+      <span class="count"><b id="countNow">0</b> / 10</span>
+      <div class="prog" aria-hidden="true"><i id="progBar"></i></div>
+    </div>
+    <span id="hint" class="hidden"></span>
     <div class="btn-row">
       <button class="btn btn-ghost" id="backBtn">← Back</button>
       <button class="btn btn-primary" id="nextBtn" disabled>Continue</button>
@@ -140,7 +204,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>
     </div>
     <h1 id="doneTitle">Thank you — you're all set</h1>
-    <p class="sub" id="doneSub">Please submit your responses to finish.</p>
+    <p class="desc" id="doneSub" style="margin-left:auto;margin-right:auto">Please submit your responses to finish.</p>
     <div class="btn-row" style="justify-content:center">
       <button class="btn btn-primary" id="submitBtn">Submit responses</button>
     </div>
@@ -150,10 +214,9 @@
 </div>
 
 <script>
-/* Paste your Apps Script Web App /exec URL here to enable saving. */
+/* Live Apps Script Web App endpoint */
 const SUBMIT_ENDPOINT = "https://script.google.com/macros/s/AKfycby43rNu743aT3yXPpvyG5G0JE0jWVrZi0s59NivB5RUCT0RST_qIhJLZZ8XPVLEQDaD/exec";
 
-/* ---------- Resilience data ---------- */
 const SCREENING = [
   "When you face a major setback, are you usually able to get back to your normal routine?",
   "If you fail at something important, do you usually try again?",
@@ -166,7 +229,6 @@ const SCREENING = [
   "Can you recover from a difficult experience without allowing it to affect all areas of your daily life?",
   "Even after experiencing failure or rejection, can you continue working toward your goals?"
 ];
-/* Branch 1 (taken when score is HIGH, 6–10) */
 const BRANCH_A = [
   "Do you believe that you can improve your abilities through practice and effort?",
   "When you find something difficult to learn, do you believe you can become better at it with practice?",
@@ -179,7 +241,6 @@ const BRANCH_A = [
   "Do you believe that your present level of ability does not determine what you can achieve in the future?",
   "Do you regularly set goals for improving yourself academically or personally?"
 ];
-/* Branch 2 (taken when score is LOW, 0–5) */
 const BRANCH_B = [
   "When you face a problem, do you usually try to identify what you can do about it?",
   "When something is difficult, do you usually break the problem into smaller steps?",
@@ -193,53 +254,46 @@ const BRANCH_B = [
   "Even when a problem feels difficult, do you believe there is something you can do to improve the situation?"
 ];
 
+const CHK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>';
+const DSH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 12h12"/></svg>';
+
 const $ = s => document.querySelector(s);
-const state = {
-  student:{}, phase:'screening',            // 'screening' | 'branch'
-  screening:[], branch:[], branchType:null  // 'A' | 'B'
-};
+const state = { student:{}, phase:'screening', screening:[], branch:[], branchType:null };
 function show(id){ ['details','quiz','done'].forEach(s=>$('#screen-'+s).classList.toggle('hidden', s!==id)); window.scrollTo({top:0,behavior:'smooth'}); }
 
-/* ---------- Details validation ---------- */
 const regEl=$('#f-reg'), progEl=$('#f-prog');
 regEl.addEventListener('input', ()=>{ regEl.value = regEl.value.replace(/\D/g,'').slice(0,8); validate(); });
 progEl.addEventListener('input', validate);
 function validate(){
-  const regOk = /^\d{8}$/.test(regEl.value);
-  const progOk = progEl.value.trim().length>0;
-  $('#startBtn').disabled = !(regOk && progOk);
-  return regOk && progOk;
+  const ok = /^\d{8}$/.test(regEl.value) && progEl.value.trim().length>0;
+  $('#startBtn').disabled = !ok; return ok;
 }
 $('#startBtn').addEventListener('click', ()=>{
   const regOk=/^\d{8}$/.test(regEl.value), progOk=progEl.value.trim().length>0;
-  $('#err-reg').textContent = regOk ? '' : 'Enter exactly 8 digits.';
-  regEl.classList.toggle('bad', !regOk);
-  $('#err-prog').textContent = progOk ? '' : 'Programme is required.';
-  progEl.classList.toggle('bad', !progOk);
+  $('#err-reg').textContent = regOk ? '' : 'Enter exactly 8 digits.'; regEl.classList.toggle('bad', !regOk);
+  $('#err-prog').textContent = progOk ? '' : 'Programme is required.'; progEl.classList.toggle('bad', !progOk);
   if(!(regOk&&progOk)) return;
   state.student = { reg:regEl.value, name:$('#f-name').value.trim(), programme:progEl.value.trim() };
   state.phase='screening'; state.screening=[]; state.branch=[]; state.branchType=null;
   renderQuiz(); show('quiz');
 });
 
-/* ---------- Quiz ---------- */
 function currentSet(){
   if(state.phase==='screening') return {arr:state.screening, qs:SCREENING};
   return {arr:state.branch, qs:(state.branchType==='A'?BRANCH_A:BRANCH_B)};
 }
 function renderQuiz(){
   const {arr,qs} = currentSet();
-  $('#quizLead').textContent = state.phase==='screening'
-    ? 'Please answer Yes or No to each question.'
-    : 'Thank you. A few more questions to finish.';
+  if(state.phase==='screening'){ $('#quizLead').textContent='A few honest answers'; $('#quizSub').textContent='There are no right or wrong answers — just tap Yes or No.'; }
+  else { $('#quizLead').textContent='Almost done'; $('#quizSub').textContent='A few more to finish — keep going.'; }
   $('#backBtn').style.visibility = state.phase==='screening' ? 'hidden' : 'visible';
   $('#qlist').innerHTML = qs.map((q,i)=>`
     <div class="q">
       <div class="qn">${i+1}</div>
       <div class="qt">${q}</div>
       <div class="toggle" role="group" aria-label="Question ${i+1}">
-        <button type="button" class="yes ${arr[i]===1?'on':''}" data-i="${i}" data-v="1">Yes</button>
-        <button type="button" class="no ${arr[i]===0?'on':''}" data-i="${i}" data-v="0">No</button>
+        <button type="button" class="yes ${arr[i]===1?'on':''}" data-i="${i}" data-v="1">Yes ${CHK}</button>
+        <button type="button" class="no ${arr[i]===0?'on':''}" data-i="${i}" data-v="0">No ${DSH}</button>
       </div>
     </div>`).join('');
   updateProgress();
@@ -248,7 +302,7 @@ function updateProgress(){
   const {arr} = currentSet();
   const n = arr.filter(v=>v===0||v===1).length;
   $('#progBar').style.width = (n/10*100)+'%';
-  $('#hint').textContent = `${n} of 10 answered`;
+  $('#countNow').textContent = n;
   $('#nextBtn').disabled = n<10;
 }
 $('#qlist').addEventListener('click', e=>{
@@ -258,15 +312,12 @@ $('#qlist').addEventListener('click', e=>{
   b.closest('.toggle').querySelectorAll('button').forEach(x=>x.classList.toggle('on',+x.dataset.v===v));
   updateProgress();
 });
-$('#backBtn').addEventListener('click', ()=>{
-  if(state.phase==='branch'){ state.phase='screening'; renderQuiz(); }
-});
+$('#backBtn').addEventListener('click', ()=>{ if(state.phase==='branch'){ state.phase='screening'; renderQuiz(); } });
 $('#nextBtn').addEventListener('click', ()=>{
   if(state.phase==='screening'){
     const score = state.screening.reduce((a,b)=>a+b,0);
-    state.branchType = score>=6 ? 'A' : 'B';   // silent: HIGH→Branch 1, LOW→Branch 2
-    state.phase='branch';
-    renderQuiz();                               // straight to next 10 questions, no reveal
+    state.branchType = score>=6 ? 'A' : 'B';
+    state.phase='branch'; renderQuiz();
   } else {
     show('done');
     const el=$('#saveState'), btn=$('#submitBtn');
@@ -275,17 +326,11 @@ $('#nextBtn').addEventListener('click', ()=>{
   }
 });
 
-/* ---------- Payload + submit ---------- */
 function buildPayload(){
   return {
-    reg: state.student.reg,
-    name: state.student.name || '',
-    programme: state.student.programme,
-    screening: state.screening.slice(),
-    branchType: state.branchType,               // 'A' (Branch 1) or 'B' (Branch 2)
-    branch: state.branch.slice(),
-    resScore: state.screening.reduce((a,b)=>a+b,0),
-    branchScore: state.branch.reduce((a,b)=>a+b,0)
+    reg: state.student.reg, name: state.student.name || '', programme: state.student.programme,
+    screening: state.screening.slice(), branchType: state.branchType, branch: state.branch.slice(),
+    resScore: state.screening.reduce((a,b)=>a+b,0), branchScore: state.branch.reduce((a,b)=>a+b,0)
   };
 }
 $('#submitBtn').addEventListener('click', ()=>{
