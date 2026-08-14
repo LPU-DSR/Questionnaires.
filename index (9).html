@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Student Questionnaire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     CONFIG — paste your Apps Script /exec URL to enable saving.
+     Leave "" to preview without a backend.
+     ============================================================ */
+  :root{
+    --navy:#16263f; --ink:#223040; --muted:#5f7183; --line:#e3e9ef;
+    --bg:#f5f8fb; --card:#fff; --accent:#3a9d6b; --accent-bg:#eef7f1;
+    --radius:18px; --shadow:0 1px 2px rgba(22,38,63,.04),0 12px 34px -18px rgba(22,38,63,.22);
+    --shadow-lg:0 30px 70px -30px rgba(22,38,63,.35);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Inter',system-ui,sans-serif;color:var(--ink);line-height:1.55;
+    background:radial-gradient(1100px 560px at 82% -10%,#eaf2fb 0,transparent 55%),
+      radial-gradient(820px 460px at -8% 8%,#eef7f1 0,transparent 50%),var(--bg);
+    -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:720px;margin:0 auto;padding:26px 20px 90px}
+  .masthead{display:flex;align-items:center;gap:13px;margin-bottom:22px}
+  .crest{width:44px;height:44px;border-radius:12px;flex:none;display:grid;place-items:center;color:#fff;
+    background:linear-gradient(150deg,var(--navy),#24405f);box-shadow:var(--shadow)}
+  .crest svg{width:24px;height:24px}
+  .masthead .m-title{font-weight:600;font-size:.96rem}
+
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:30px;animation:rise .45s cubic-bezier(.2,.8,.3,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  @media (max-width:600px){.panel{padding:22px 18px}.wrap{padding:18px 14px 80px}}
+
+  h1{font-family:'Fraunces',serif;font-weight:600;font-size:1.6rem;color:var(--navy);margin:0 0 4px;letter-spacing:-.01em}
+  .sub{color:var(--muted);font-size:.95rem;margin:0 0 22px}
+
+  .field{margin-bottom:16px}
+  .field label{font-size:.82rem;font-weight:600;color:var(--navy);display:block;margin-bottom:6px}
+  .field .req{color:var(--accent)}
+  .field .opt{color:var(--muted);font-weight:400}
+  .field input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:11px;font:inherit;
+    color:var(--ink);background:#fbfdff;transition:border-color .2s,box-shadow .2s}
+  .field input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg)}
+  .field input.bad{border-color:#e05a4f;box-shadow:0 0 0 3px #fdeeec}
+  .err{font-size:.76rem;color:#d64a3f;margin-top:6px;min-height:1em}
+
+  .btn{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:600;padding:13px 24px;border-radius:12px;
+    transition:transform .15s,box-shadow .2s,opacity .2s}
+  .btn:active{transform:translateY(1px)}
+  .btn-primary{background:linear-gradient(150deg,var(--navy),#24405f);color:#fff;box-shadow:var(--shadow)}
+  .btn-primary:hover{box-shadow:var(--shadow-lg)}
+  .btn-primary:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+  .btn-ghost{background:transparent;color:var(--navy);border:1px solid var(--line)}
+  .btn-ghost:hover{background:#f0f4f8}
+  .btn-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:26px}
+
+  .lead{font-size:.95rem;color:var(--muted);margin:0 0 6px}
+  .qlist{margin-top:8px}
+  .q{display:flex;align-items:center;gap:14px;padding:15px 4px;border-bottom:1px solid var(--line)}
+  .q:last-child{border-bottom:none}
+  .q .qn{font-size:.72rem;font-weight:700;color:#fff;background:var(--accent);flex:none;width:26px;height:26px;
+    border-radius:8px;display:grid;place-items:center}
+  .q .qt{flex:1;font-size:.95rem}
+  .toggle{display:flex;gap:6px;flex:none;background:#eef2f6;padding:4px;border-radius:11px}
+  .toggle button{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:600;font-size:.82rem;
+    padding:8px 16px;border-radius:8px;color:var(--muted);background:transparent;transition:all .18s}
+  .toggle button.yes.on{background:var(--accent);color:#fff}
+  .toggle button.no.on{background:var(--navy);color:#fff}
+  .toggle button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .prog{height:6px;background:var(--line);border-radius:20px;overflow:hidden;margin-top:14px}
+  .prog>i{display:block;height:100%;width:0;background:var(--accent);border-radius:20px;transition:width .4s ease}
+  .hint{font-size:.8rem;color:var(--muted);margin-top:10px}
+
+  .done-ico{width:64px;height:64px;border-radius:50%;background:var(--accent-bg);color:var(--accent);
+    display:grid;place-items:center;margin:0 auto 16px}
+  .done-ico svg{width:32px;height:32px}
+  .center{text-align:center}
+  .save-state{font-size:.85rem;color:var(--muted);margin-top:16px;text-align:center}
+  .hidden{display:none!important}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="crest" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-7-10a7 7 0 0 1 14 0c0 5.65-7 10-7 10Z"/><path d="M9.2 12.2l1.9 1.9 3.7-3.9"/></svg>
+    </div>
+    <div class="m-title">Division of Student Relationship</div>
+  </div>
+
+  <!-- ===== DETAILS ===== -->
+  <section class="panel" id="screen-details">
+    <h1>Please enter your details</h1>
+    <p class="sub">Registration number and programme are required.</p>
+
+    <div class="field">
+      <label for="f-reg">Registration Number <span class="req">*</span></label>
+      <input id="f-reg" type="text" inputmode="numeric" maxlength="8" placeholder="8-digit number" autocomplete="off" />
+      <div class="err" id="err-reg"></div>
+    </div>
+    <div class="field">
+      <label for="f-name">Full Name <span class="opt">(optional)</span></label>
+      <input id="f-name" type="text" placeholder="Your name" autocomplete="name" />
+    </div>
+    <div class="field">
+      <label for="f-prog">Programme <span class="req">*</span></label>
+      <input id="f-prog" type="text" placeholder="e.g. B.Tech CSE" />
+      <div class="err" id="err-prog"></div>
+    </div>
+
+    <div class="btn-row">
+      <span></span>
+      <button class="btn btn-primary" id="startBtn" disabled>Begin →</button>
+    </div>
+  </section>
+
+  <!-- ===== QUESTIONS (used for both sets) ===== -->
+  <section class="panel hidden" id="screen-quiz">
+    <p class="lead" id="quizLead">Please answer Yes or No to each question.</p>
+    <div class="qlist" id="qlist"></div>
+    <div class="prog" aria-hidden="true"><i id="progBar"></i></div>
+    <div class="hint" id="hint">0 of 10 answered</div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" id="backBtn">← Back</button>
+      <button class="btn btn-primary" id="nextBtn" disabled>Continue</button>
+    </div>
+  </section>
+
+  <!-- ===== DONE ===== -->
+  <section class="panel center hidden" id="screen-done">
+    <div class="done-ico" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>
+    </div>
+    <h1 id="doneTitle">Thank you — you're all set</h1>
+    <p class="sub" id="doneSub">Please submit your responses to finish.</p>
+    <div class="btn-row" style="justify-content:center">
+      <button class="btn btn-primary" id="submitBtn">Submit responses</button>
+    </div>
+    <div class="save-state" id="saveState"></div>
+  </section>
+
+</div>
+
+<script>
+/* Paste your Apps Script Web App /exec URL here to enable saving. */
+const SUBMIT_ENDPOINT = "https://script.google.com/macros/s/AKfycby43rNu743aT3yXPpvyG5G0JE0jWVrZi0s59NivB5RUCT0RST_qIhJLZZ8XPVLEQDaD/exec";
+
+/* ---------- Resilience data ---------- */
+const SCREENING = [
+  "When you face a major setback, are you usually able to get back to your normal routine?",
+  "If you fail at something important, do you usually try again?",
+  "When something goes wrong, can you usually continue with your important responsibilities?",
+  "If your first plan does not work, can you usually find another way to move forward?",
+  "Can you handle disappointment without giving up on your goal?",
+  "When you make a mistake, can you accept it and try to improve?",
+  "When you face a difficult situation, can you remain hopeful that it can be managed?",
+  "When a problem becomes difficult, are you willing to seek help and continue working on it?",
+  "Can you recover from a difficult experience without allowing it to affect all areas of your daily life?",
+  "Even after experiencing failure or rejection, can you continue working toward your goals?"
+];
+/* Branch 1 (taken when score is HIGH, 6–10) */
+const BRANCH_A = [
+  "Do you believe that you can improve your abilities through practice and effort?",
+  "When you find something difficult to learn, do you believe you can become better at it with practice?",
+  "When you receive poor results, do you believe you can improve your performance?",
+  "Are you willing to learn something even when you are not naturally good at it?",
+  "Do you actively try to improve areas in which you are weak?",
+  "Do you see mistakes as opportunities to learn something new?",
+  "Are you comfortable receiving feedback about areas you need to improve?",
+  "When one approach does not work, are you willing to change your approach?",
+  "Do you believe that your present level of ability does not determine what you can achieve in the future?",
+  "Do you regularly set goals for improving yourself academically or personally?"
+];
+/* Branch 2 (taken when score is LOW, 0–5) */
+const BRANCH_B = [
+  "When you face a problem, do you usually try to identify what you can do about it?",
+  "When something is difficult, do you usually break the problem into smaller steps?",
+  "When you cannot solve a problem yourself, do you seek help from someone you trust?",
+  "When you feel overwhelmed, do you use a healthy way to calm yourself before dealing with the problem?",
+  "When a problem continues for several days, do you take some action rather than simply waiting for it to disappear?",
+  "When one solution does not work, do you try another solution?",
+  "Can you usually distinguish between what you can control and what you cannot control?",
+  "When facing a difficult situation, do you think about possible consequences before making a decision?",
+  "When you are struggling, are you comfortable telling someone that you need support?",
+  "Even when a problem feels difficult, do you believe there is something you can do to improve the situation?"
+];
+
+const $ = s => document.querySelector(s);
+const state = {
+  student:{}, phase:'screening',            // 'screening' | 'branch'
+  screening:[], branch:[], branchType:null  // 'A' | 'B'
+};
+function show(id){ ['details','quiz','done'].forEach(s=>$('#screen-'+s).classList.toggle('hidden', s!==id)); window.scrollTo({top:0,behavior:'smooth'}); }
+
+/* ---------- Details validation ---------- */
+const regEl=$('#f-reg'), progEl=$('#f-prog');
+regEl.addEventListener('input', ()=>{ regEl.value = regEl.value.replace(/\D/g,'').slice(0,8); validate(); });
+progEl.addEventListener('input', validate);
+function validate(){
+  const regOk = /^\d{8}$/.test(regEl.value);
+  const progOk = progEl.value.trim().length>0;
+  $('#startBtn').disabled = !(regOk && progOk);
+  return regOk && progOk;
+}
+$('#startBtn').addEventListener('click', ()=>{
+  const regOk=/^\d{8}$/.test(regEl.value), progOk=progEl.value.trim().length>0;
+  $('#err-reg').textContent = regOk ? '' : 'Enter exactly 8 digits.';
+  regEl.classList.toggle('bad', !regOk);
+  $('#err-prog').textContent = progOk ? '' : 'Programme is required.';
+  progEl.classList.toggle('bad', !progOk);
+  if(!(regOk&&progOk)) return;
+  state.student = { reg:regEl.value, name:$('#f-name').value.trim(), programme:progEl.value.trim() };
+  state.phase='screening'; state.screening=[]; state.branch=[]; state.branchType=null;
+  renderQuiz(); show('quiz');
+});
+
+/* ---------- Quiz ---------- */
+function currentSet(){
+  if(state.phase==='screening') return {arr:state.screening, qs:SCREENING};
+  return {arr:state.branch, qs:(state.branchType==='A'?BRANCH_A:BRANCH_B)};
+}
+function renderQuiz(){
+  const {arr,qs} = currentSet();
+  $('#quizLead').textContent = state.phase==='screening'
+    ? 'Please answer Yes or No to each question.'
+    : 'Thank you. A few more questions to finish.';
+  $('#backBtn').style.visibility = state.phase==='screening' ? 'hidden' : 'visible';
+  $('#qlist').innerHTML = qs.map((q,i)=>`
+    <div class="q">
+      <div class="qn">${i+1}</div>
+      <div class="qt">${q}</div>
+      <div class="toggle" role="group" aria-label="Question ${i+1}">
+        <button type="button" class="yes ${arr[i]===1?'on':''}" data-i="${i}" data-v="1">Yes</button>
+        <button type="button" class="no ${arr[i]===0?'on':''}" data-i="${i}" data-v="0">No</button>
+      </div>
+    </div>`).join('');
+  updateProgress();
+}
+function updateProgress(){
+  const {arr} = currentSet();
+  const n = arr.filter(v=>v===0||v===1).length;
+  $('#progBar').style.width = (n/10*100)+'%';
+  $('#hint').textContent = `${n} of 10 answered`;
+  $('#nextBtn').disabled = n<10;
+}
+$('#qlist').addEventListener('click', e=>{
+  const b = e.target.closest('button[data-i]'); if(!b) return;
+  const i=+b.dataset.i, v=+b.dataset.v;
+  currentSet().arr[i]=v;
+  b.closest('.toggle').querySelectorAll('button').forEach(x=>x.classList.toggle('on',+x.dataset.v===v));
+  updateProgress();
+});
+$('#backBtn').addEventListener('click', ()=>{
+  if(state.phase==='branch'){ state.phase='screening'; renderQuiz(); }
+});
+$('#nextBtn').addEventListener('click', ()=>{
+  if(state.phase==='screening'){
+    const score = state.screening.reduce((a,b)=>a+b,0);
+    state.branchType = score>=6 ? 'A' : 'B';   // silent: HIGH→Branch 1, LOW→Branch 2
+    state.phase='branch';
+    renderQuiz();                               // straight to next 10 questions, no reveal
+  } else {
+    show('done');
+    const el=$('#saveState'), btn=$('#submitBtn');
+    if(!SUBMIT_ENDPOINT){ el.textContent='Online submission isn’t configured yet.'; btn.disabled=true; btn.style.opacity=.45; btn.style.cursor='not-allowed'; }
+    else { el.textContent=''; btn.disabled=false; btn.style.opacity=''; btn.textContent='Submit responses'; }
+  }
+});
+
+/* ---------- Payload + submit ---------- */
+function buildPayload(){
+  return {
+    reg: state.student.reg,
+    name: state.student.name || '',
+    programme: state.student.programme,
+    screening: state.screening.slice(),
+    branchType: state.branchType,               // 'A' (Branch 1) or 'B' (Branch 2)
+    branch: state.branch.slice(),
+    resScore: state.screening.reduce((a,b)=>a+b,0),
+    branchScore: state.branch.reduce((a,b)=>a+b,0)
+  };
+}
+$('#submitBtn').addEventListener('click', ()=>{
+  if(!SUBMIT_ENDPOINT) return;
+  const btn=$('#submitBtn'), el=$('#saveState');
+  btn.disabled=true; btn.style.opacity=.6; btn.textContent='Submitting…'; el.textContent='Sending…';
+  fetch(SUBMIT_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(buildPayload())})
+    .then(()=>{ btn.textContent='Submitted ✓'; btn.style.opacity=1; el.textContent='Your responses have been recorded. You may close this page.'; })
+    .catch(()=>{ btn.disabled=false; btn.style.opacity=1; btn.textContent='Retry submit'; el.textContent='Couldn’t reach the server — please try again.'; });
+});
+</script>
+</body>
+</html>
